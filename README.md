@@ -50,7 +50,7 @@ replace_value_with_definition("weights_H",1.0/n)
 
 Training Curve(Cross-Entropy)
 ===
-![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/ANN/src/Training.png)
+![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/Train.png)
 
 Data
 ===
