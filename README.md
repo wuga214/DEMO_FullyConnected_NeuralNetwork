@@ -8,8 +8,8 @@ also number of node in each layers. The activation function is also flexible,
 which allows you to change between ReLU and Sigmoid. If you are interested in
 using other activation function, please add it in src/network/activations.py
 
-Some implementation of ANN online has similar structure of this one. However, be
-aware that the inner implementation are slightly different. My purpose of this
+Some implementations of ANN online have similar structure with this one. However,
+be aware that the inner implementation are slightly different. My purpose of this
 implementation is to show the clear forward and backward structure of Neural
 network, but not for high speed running.
 
@@ -17,6 +17,15 @@ This is not GPU version! Do not expect this one can run fast...
 
 Please DO NOT copy this code for any kind of assignment that released by your
 course lecturer! 
+
+How to train deep network?
+===
+You need to generate network with single hidden layer, and set the output of the 
+need work to be input. After converging, store the weight matrix from input to
+hidden layer and discard others. Then one layer by one layer, you will got all the
+weights of the deep network. Then, its time to generate the deep network and feed
+trained weights into it. Make sure to train the network as well! It at least can
+optimize three layers close to output!!
 
 Settings
 ===
