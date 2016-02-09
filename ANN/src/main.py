@@ -10,7 +10,7 @@ Created on Feb 6, 2016
 # which allows you to change between ReLU and Sigmoid. If you are interested in
 # using other activation function, please add it in src/network/activations.py
 # 
-# Some implementation of ANN OL has similar structure of this one. However, be
+# Some implementations of ANN OL have similar structure of this one. However, be
 # aware that the inner implementation are slightly different. My purpose of this
 # implementation is to show the clear forward and backward structure of Neural
 # network, but not for high speed running.
@@ -44,8 +44,8 @@ def replace_value_with_definition(key_to_find, definition):
             initial_setting[key] = definition           
 
 dataset = data.load()
-features = dataset["train_data"]
-targets = dataset["train_labels"]
+features = dataset["train_data"][:50]
+targets = dataset["train_labels"][:50]
 m,n = features.shape
 replace_value_with_definition("inputs_N",n)
 replace_value_with_definition("weights_L",-1.0/n)
@@ -53,7 +53,7 @@ replace_value_with_definition("weights_H",1.0/n)
 print initial_setting
 NN = network.NetworkFrame(initial_setting)
 features_normalized,_,_ = data.normalize(features)
-NN.Train(features_normalized, targets, 1.0/len(features_normalized), 5, 1000, 0.001)
+NN.Train(features_normalized, targets, 1.0/len(features_normalized), 5, 3000, 0.001)
 learning_record = NN.GetLearingRecord()
 indecs = [x[0] for x in learning_record]
 errors = [x[1] for x in learning_record]

@@ -7,6 +7,7 @@ import numpy as np
 import utils
 import random
 from activations import ReLU,Sigmoid
+from scipy.stats.mstats_basic import moment
 
 #===============================================================================
 # This is a framework of neural network
@@ -78,7 +79,8 @@ class NetworkFrame:
         else:
             return output
         
-    def BackPropagation(self, outputs, derivates, training_targets, learning_rate):
+    def BackPropagation(self, outputs, derivates, training_targets, prev_delta_w, momentum, learning_rate):
+        curr_delta_w = []
         output = outputs[-1]
         #error = self.loss(training_targets, output, True).T
         error = (training_targets-output).T
@@ -88,13 +90,16 @@ class NetworkFrame:
             delta_w = learning_rate*np.dot(delta, utils.add_ones(outputs[i])).T
             if i != 0:
                 delta = np.dot(self.weights_Matrics[i][1:,:], delta)*derivates[i-1]
-            self.weights_Matrics[i]+=delta_w
+            self.weights_Matrics[i]+=momentum*delta_w+(1-momentum)*prev_delta_w[i]
+            curr_delta_w.append(delta_w)
+        return curr_delta_w[::-1]
         
-    def Train(self, training_features, training_targets, learning_rate = 0.05, minibatch_size = 10, max_epoch = 1000, error_threshold = 1e-3):
+    def Train(self, training_features, training_targets, learning_rate = 0.05, minibatch_size = 10, max_epoch = 1000, error_threshold = 1e-3,momentum = 0.7):
         epoch = 0
         error = 1
         features = np.copy(training_features)
         targets = np.copy(training_targets)
+        prev_delta_w = [0.001*x for x in self.weights_Matrics]
         
         while error > error_threshold and epoch < max_epoch:
             epoch += 1
@@ -107,7 +112,7 @@ class NetworkFrame:
                 mini_targets = targets[i*minibatch_size:(i+1)*minibatch_size]
                 outputs, derivates = self.FeedForward(mini_features, True)
                 error = self.loss(mini_targets, outputs[-1], deriv=False)
-                self.BackPropagation(outputs, derivates, mini_targets, learning_rate)
+                prev_delta_w = self.BackPropagation(outputs, derivates, mini_targets,prev_delta_w, momentum, learning_rate)
             train_output = self.FeedForward(features, False)
             train_error = self.loss(targets, train_output, deriv=False)
             self.learning_C.append([epoch, train_error[0]])
