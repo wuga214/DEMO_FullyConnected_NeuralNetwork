@@ -57,7 +57,11 @@ Data
 ![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/DATA.png)
 [CIFAR Website](https://www.cs.toronto.edu/~kriz/cifar.html)
 
+Update
+===
+1. Now momentum is fully activated![2016-02-09]
+
 Issue
 ===
-1. Haven't implement momentum mechanism yet. So the current code can stuck on saddle points..
-2. Haven't implement saving function. So the trained model will lose after finishing the program..
+1. Haven't implement saving function. So the trained model will lose after finishing the program..
+2. Doesn't include random dropout mechanism. So you need to trace testing error to control training epoch..
