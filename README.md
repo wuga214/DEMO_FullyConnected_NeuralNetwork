@@ -21,7 +21,7 @@ course lecturer!
 How to train deep network?
 ===
 You need to generate network with single hidden layer, and set the output of the 
-need work to be input. After converging, store the weight matrix from input to
+network with inputs. After converging, store the weight matrix from input to
 hidden layer and discard others. Then one layer by one layer, you will got all the
 weights of the deep network. Then, its time to generate the deep network and feed
 trained weights into it. Make sure to train the network as well! It at least can
