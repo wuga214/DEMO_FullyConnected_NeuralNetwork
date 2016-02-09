@@ -16,7 +16,7 @@ network, but not for high speed running.
 This is not GPU version! Do not expect this one can run fast...
 
 Please DO NOT copy this code for any kind of assignment that released by your
-college study! 
+course lecturer! 
 
 Settings
 ===
@@ -39,7 +39,7 @@ replace_value_with_definition("weights_L",-1.0/n)
 replace_value_with_definition("weights_H",1.0/n)
 ```
 
-Training Curve
+Training Curve(Cross-Entropy)
 ===
 ![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/ANN/src/Training.png)
 
