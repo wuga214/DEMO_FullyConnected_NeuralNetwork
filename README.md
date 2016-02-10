@@ -52,6 +52,7 @@ Training Curve(Cross-Entropy)
 ===
 Batch Size 10, learning rate 1/datasize datasize:50
 ![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/Train.png)
+
 Batch Size 5, learning rate 1/datasize datasize:10000
 ![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/dnn_curve.png)
 
