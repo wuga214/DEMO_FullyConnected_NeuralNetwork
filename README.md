@@ -50,10 +50,14 @@ replace_value_with_definition("weights_H",1.0/n)
 
 Training Curve(Cross-Entropy)
 ===
-Batch Size 10, learning rate 1/datasize datasize:50
+Batch Size 10,LEARNING RATE 1/datasize datasize:50
+Hidden Layer 1: 20 ReLU
+Output layer: 1 Sigmoid
 ![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/Train.png)
 
 Batch Size 5, learning rate 1/datasize datasize:10000
+Hidden Layer 1: 20 ReLU
+Output layer: 1 Sigmoid
 ![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/dnn_curve.png)
 
 Data
