@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 
 ax = plt.subplot(111)
 
-def LossCurve(epoch, error):
+def LossCurve(epoch, error,testing_error):
     plt.figure(1)
     plt.subplot(111)
-    plt.plot(epoch, error)
+    plt.plot(epoch, error,'b',epoch, testing_error,'g')
     plt.yscale('linear') #or log
     plt.title('Learning Error v.s Epoch')
     plt.grid(True)

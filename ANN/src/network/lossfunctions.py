@@ -12,9 +12,15 @@ def CrossEntropyLoss(y,z,deriv=False):
     z=sp.minimum(z,1-epsilon)
     
     if deriv:            
-        return -1.0/len(y)*(np.multiply(y,1/z)+np.multiply((1-y),1/(1-z)))
+        return y-z
     else:
         return -1.0/len(y)*np.sum((np.multiply(y,np.log(z))+np.multiply((1-y),np.log(1-z))),axis=0)
+    
+def MeanSquaredError(y,z,deriv=False):
+    if deriv:
+        return (y-z)*y*(1-y)
+    else:
+        return -1.0/len(y)*np.sum(np.multiply(y-z,y-z),axis=0)
     
 # y=np.array([1,0,0,1])
 # z=np.array([0.9,0.1,0.11,0.93])

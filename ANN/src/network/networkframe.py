@@ -82,9 +82,9 @@ class NetworkFrame:
     def BackPropagation(self, outputs, derivates, training_targets, prev_delta_w, momentum, learning_rate):
         curr_delta_w = []
         output = outputs[-1]
-        #error = self.loss(training_targets, output, True).T
-        error = (training_targets-output).T
-        delta = error*derivates[-1]
+        delta = self.loss(training_targets, output, True).T
+        #error = (training_targets-output).T
+        #delta = error*derivates[-1]
         
         for i in range( len(self.layers) )[::-1]:
             delta_w = learning_rate*np.dot(delta, utils.add_ones(outputs[i])).T
@@ -94,11 +94,14 @@ class NetworkFrame:
             curr_delta_w.append(delta_w)
         return curr_delta_w[::-1]
         
-    def Train(self, training_features, training_targets, learning_rate = 0.05, minibatch_size = 10, max_epoch = 1000, error_threshold = 1e-3,momentum = 0.7):
+    def Train(self, training_features, training_targets, testing_features, testing_targets,\
+               learning_rate = 0.05, minibatch_size = 10, max_epoch = 1000, error_threshold = 1e-3,momentum = 0.7):
         epoch = 0
         error = 1
         features = np.copy(training_features)
         targets = np.copy(training_targets)
+        test_features = np.copy(testing_features)
+        test_targets = np.copy(testing_targets)
         prev_delta_w = [0.001*x for x in self.weights_Matrics]
         
         while error > error_threshold and epoch < max_epoch:
@@ -113,19 +116,31 @@ class NetworkFrame:
                 outputs, derivates = self.FeedForward(mini_features, True)
                 error = self.loss(mini_targets, outputs[-1], deriv=False)
                 prev_delta_w = self.BackPropagation(outputs, derivates, mini_targets,prev_delta_w, momentum, learning_rate)
-            train_output = self.FeedForward(features, False)
-            train_error = self.loss(targets, train_output, deriv=False)
-            self.learning_C.append([epoch, train_error[0]])
+            train_output = self.Test(features)
+            train_error = self.Error(targets, train_output)
+            test_output = self.Test(test_features)
+            test_error = self.Error(test_targets, test_output)
+            self.learning_C.append([epoch, train_error])
+            self.testing_C.append([epoch, test_error])
             print "* Epoch %d : Error %f." %(epoch,train_error)
         
         if epoch%1000==0:
         # Show the current training status
-            print "* current network error (Cross-Entropy):", error
+            print "* Default maximum epoch reached!"
         print "* Trained for %d epochs." % epoch 
         
     def Test(self, test_features):
-        return self.FeedForward(test_features, False)        
+        prediction = self.FeedForward(test_features, False)
+        prediction[prediction>=0.5] = 1  
+        prediction[prediction != 1] = 0
+        return prediction
+    
+    def Error(self, y, z):
+        return np.sum(np.abs(y-z))/len(y)      
         
     def GetLearingRecord(self):
         return self.learning_C
+    
+    def GetTestingRecord(self):
+        return self.testing_C
         

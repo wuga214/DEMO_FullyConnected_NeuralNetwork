@@ -30,12 +30,13 @@ import visualization
 
 initial_setting = {
     "inputs_N"          : 2,       
-    "layers"            : [ (20, network.ReLU),(1, network.Sigmoid)],
+    "layers"            : [ (100, network.ReLU),(1, network.Sigmoid)],
     "weights_L"         : -0.1,     
     "weights_H"         : 0.1,      
     "save"              : False, #haven't implement this one yet  
     "loss"              : network.CrossEntropyLoss, 
-    "learning_C"        : []
+    "learning_C"        : [],
+    "testing_C"         : []
                    }
 
 def replace_value_with_definition(key_to_find, definition):
@@ -44,18 +45,23 @@ def replace_value_with_definition(key_to_find, definition):
             initial_setting[key] = definition           
 
 dataset = data.load()
-features = dataset["train_data"][:50]
-targets = dataset["train_labels"][:50]
+features = dataset["train_data"]
+targets = dataset["train_labels"]
+test_features = dataset["test_data"]
+test_targets = dataset["test_labels"]
 m,n = features.shape
 replace_value_with_definition("inputs_N",n)
 replace_value_with_definition("weights_L",-1.0/n)
 replace_value_with_definition("weights_H",1.0/n)
 print initial_setting
 NN = network.NetworkFrame(initial_setting)
-features_normalized,_,_ = data.normalize(features)
-NN.Train(features_normalized, targets, 1.0/len(features_normalized), 5, 3000, 0.001)
+features_normalized,mean,std = data.normalize(features)
+test_normalized,_,_ = data.normalize(test_features,mean,std)
+NN.Train(features_normalized, targets, test_normalized, test_targets, 10e-5, 100, 200, 0.001)
 learning_record = NN.GetLearingRecord()
 indecs = [x[0] for x in learning_record]
 errors = [x[1] for x in learning_record]
-visualization.LossCurve(indecs,errors)
+testing_record = NN.GetTestingRecord()
+testing_errors = [x[1] for x in testing_record]
+visualization.LossCurve(indecs,errors,testing_errors)
 
