@@ -139,6 +139,8 @@ Data
 Update
 ===
 1. Now momentum is fully activated![2016-02-09]
+2. Visualization for learning curve is added[2016-02-12] 
+3. Experiment functions is built![2016-02-14]
 
 Issue
 ===
