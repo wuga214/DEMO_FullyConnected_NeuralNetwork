@@ -6,8 +6,6 @@ Created on Feb 8, 2016
 
 import matplotlib.pyplot as plt
 
-ax = plt.subplot(111)
-
 def LossCurve(epoch, error,testing_error):
     plt.figure(1)
     plt.subplot(111)

@@ -83,8 +83,6 @@ class NetworkFrame:
         curr_delta_w = []
         output = outputs[-1]
         delta = self.loss(training_targets, output, True).T
-        #error = (training_targets-output).T
-        #delta = error*derivates[-1]
         
         for i in range( len(self.layers) )[::-1]:
             delta_w = learning_rate*np.dot(delta, utils.add_ones(outputs[i])).T
@@ -108,8 +106,8 @@ class NetworkFrame:
             epoch += 1
             perm = range(len(features))
             random.shuffle(perm)
-#             features = features[perm]
-#             targets = targets[perm]
+            features = features[perm]
+            targets = targets[perm]
             for i in range(len(features)/minibatch_size):
                 mini_features = features[i*minibatch_size:(i+1)*minibatch_size]
                 mini_targets = targets[i*minibatch_size:(i+1)*minibatch_size]
