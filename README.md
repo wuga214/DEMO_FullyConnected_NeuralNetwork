@@ -48,17 +48,88 @@ replace_value_with_definition("weights_L",-1.0/n)
 replace_value_with_definition("weights_H",1.0/n)
 ```
 
-Training Curve(Cross-Entropy)
-===
-Batch Size 10,LEARNING RATE 1/datasize datasize:50
-Hidden Layer 1: 20 ReLU
-Output layer: 1 Sigmoid
-![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/Train.png)
+## Cross-Entropy Objective vs Epoch Plot
 
-Batch Size 5, learning rate 1/datasize datasize:10000
-Hidden Layer 1: 20 ReLU
-Output layer: 1 Sigmoid
-![alt tag](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/dnn_curve.png)
+Blue Line is training data curve, green line is testing data curve.(please ignore the title..)
+
+
+```python
+from IPython.display import Image
+Image(filename='objective.png') 
+```
+
+
+
+
+![png](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/dnn_curve.png)
+
+
+
+## Error vs Epoch
+
+Blue Line is training data curve, green line is testing data curve.(please ignore the title..)
+
+
+```python
+from IPython.display import Image
+Image(filename='error.png') 
+```
+
+
+
+
+![png](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/error.png)
+
+
+
+## Test Error vs Mini Batch Size
+
+Though size of mini batch doesn't effect the final result too much, the larger mini batch will cause the curve shaking.
+
+
+```python
+from IPython.display import Image
+Image(filename='batchsize.png') 
+```
+
+
+
+
+![png](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/batchsize.png)
+
+
+
+## Test Error vs Learning Rate
+
+Larger learning rate can cause the curve shake, whereas smaller learning rate cause error decrease slow. The following plot shows such property. We then selecte 10e-5 as our learning rate.
+
+
+```python
+from IPython.display import Image
+Image(filename='learningrate.png')
+```
+
+
+
+
+![png](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/learningrate.png)
+
+
+
+## Test Error vs Number of Hidden Nodes
+
+If number of the hidden nodes is not enough, the complexity of model is limited. The network cannot optimize the objective due to the model complexity limitation. However, too large number of hidden nodes doesn't help to further improve the performance because it is already enough to represent target function. In the following plot, we show that 100 hidden nodes is enough for the task.
+
+
+```python
+from IPython.display import Image
+Image(filename='numberofhidden.png')
+```
+
+
+
+
+![png](https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/numberofhidden.png)
 
 Data
 ===
