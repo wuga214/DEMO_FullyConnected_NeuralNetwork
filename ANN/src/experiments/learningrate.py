@@ -25,8 +25,8 @@ def replace_value_with_definition(key_to_find, definition):
             initial_setting[key] = definition           
 
 dataset = data.load()
-features = dataset["train_data"][:1000]
-targets = dataset["train_labels"][:1000]
+features = dataset["train_data"]
+targets = dataset["train_labels"]
 test_features = dataset["test_data"]
 test_targets = dataset["test_labels"]
 m,n = features.shape
@@ -41,7 +41,7 @@ for rates in learningrates:
     NN = network.NetworkFrame(initial_setting)
     features_normalized,mean,std = data.normalize(features)
     test_normalized,_,_ = data.normalize(test_features,mean,std)
-    NN.Train(features_normalized, targets, test_normalized, test_targets, rates[0], 100, 50, 0.001)
+    NN.Train(features_normalized, targets, test_normalized, test_targets, rates[0], 100, 200, 0.001)
     testing_record = NN.GetTestingRecord()
     testing_indecs = [x[0] for x in testing_record]
     testing_errors = [x[1] for x in testing_record]
@@ -50,9 +50,8 @@ for rates in learningrates:
 plot_config = []
 legends= []
 for i in range(len(results)):
-    x=plt.plot(results[i][0],results[i][1],results[i][2])
+    x,=plt.plot(results[i][0],results[i][1])
     legends.append(x)
-plt.legend(x,['10e-4','10e-5','10e-6'])
-plt.title('Error curve of different learning rate')
+plt.legend(legends,['10e-4','10e-5','10e-6'])
+plt.title('Test error curve of different learning rate')
 plt.show()
-    

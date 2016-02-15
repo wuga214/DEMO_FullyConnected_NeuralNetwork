@@ -8,6 +8,7 @@ import utils
 import random
 from activations import ReLU,Sigmoid
 from scipy.stats.mstats_basic import moment
+import copy
 
 #===============================================================================
 # This is a framework of neural network
@@ -33,7 +34,8 @@ from scipy.stats.mstats_basic import moment
 class NetworkFrame:
     
     def __init__(self, settings):
-        self.__dict__.update(settings)
+        initial_setting = copy.deepcopy(settings)
+        self.__dict__.update(initial_setting)
         self.weights_N=(self.inputs_N+1)*self.layers[0][0]+\
             sum( (self.layers[index][0]+1)*layer[0] for index,layer in enumerate(self.layers[1:]))
         self.weights_Matrics = self.ReshapeWeights(self.RandomInitialWeights())
