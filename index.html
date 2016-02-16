@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Fullyconnecteddeepneuralnetwork by wuga214</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Fullyconnecteddeepneuralnetwork</h1>
+      <h2 class="project-tagline">Fully Connected Modularized Neural Network, can be easily extended to be Deep Network with little extension code</h2>
+      <a href="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork" class="btn">View on GitHub</a>
+      <a href="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="fullyconnecteddeepneuralnetwork" class="anchor" href="#fullyconnecteddeepneuralnetwork" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FullyConnectedDeepNeuralNetwork</h1>
+
+<h1>
+<a id="about-this-code" class="anchor" href="#about-this-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About this code</h1>
+
+<p>This is one modularized version of fully connected neural network
+In the initial setting, you can specify input dimensions, number of layers and
+also number of node in each layers. The activation function is also flexible,
+which allows you to change between ReLU and Sigmoid. If you are interested in
+using other activation function, please add it in src/network/activations.py</p>
+
+<p>Some implementations of ANN online have similar structure with this one. However,
+be aware that the inner implementation are slightly different. My purpose of this
+implementation is to show the clear forward and backward structure of Neural
+network, but not for high speed running.</p>
+
+<p>This is not GPU version! Do not expect this one can run fast...</p>
+
+<p>Please DO NOT copy this code for any kind of assignment that released by your
+course lecturer! </p>
+
+<h1>
+<a id="how-to-train-deep-network" class="anchor" href="#how-to-train-deep-network" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to train deep network?</h1>
+
+<p>You need to generate network with single hidden layer, and set the output of the 
+network with inputs. After converging, store the weight matrix from input to
+hidden layer and discard others. Then one layer by one layer, you will got all the
+weights of the deep network. Then, its time to generate the deep network and feed
+trained weights into it. Make sure to train the network as well! It at least can
+optimize three layers close to output!!</p>
+
+<h1>
+<a id="settings" class="anchor" href="#settings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Settings</h1>
+
+<p>Network initial settings</p>
+
+<div class="highlight highlight-source-python"><pre>initial_setting <span class="pl-k">=</span> {
+    <span class="pl-s"><span class="pl-pds">"</span>inputs_N<span class="pl-pds">"</span></span>          : <span class="pl-c1">2</span>,       <span class="pl-c">#input dimensions</span>
+    <span class="pl-s"><span class="pl-pds">"</span>layers<span class="pl-pds">"</span></span>            : [ (<span class="pl-c1">20</span>, network.ReLU),(<span class="pl-c1">1</span>, network.Sigmoid)], <span class="pl-c">#(number of node, type of nonlinear function)</span>
+    <span class="pl-s"><span class="pl-pds">"</span>weights_L<span class="pl-pds">"</span></span>         : <span class="pl-k">-</span><span class="pl-c1">0.1</span>, <span class="pl-c">#Random weight initialization bound    </span>
+    <span class="pl-s"><span class="pl-pds">"</span>weights_H<span class="pl-pds">"</span></span>         : <span class="pl-c1">0.1</span>, <span class="pl-c">#Random weight initialization bound      </span>
+    <span class="pl-s"><span class="pl-pds">"</span>save<span class="pl-pds">"</span></span>              : <span class="pl-c1">False</span>, <span class="pl-c">#haven't implement this one yet  </span>
+    <span class="pl-s"><span class="pl-pds">"</span>loss<span class="pl-pds">"</span></span>              : network.CrossEntropyLoss <span class="pl-c">#Cost Function you want to use Cross-Entropy or Mean Squared Error </span>
+                   }</pre></div>
+
+<p>You can also change some of the settings later(after seeing data), then you need the following code:</p>
+
+<div class="highlight highlight-source-python"><pre>replace_value_with_definition(<span class="pl-s"><span class="pl-pds">"</span>inputs_N<span class="pl-pds">"</span></span>,n)
+replace_value_with_definition(<span class="pl-s"><span class="pl-pds">"</span>weights_L<span class="pl-pds">"</span></span>,<span class="pl-k">-</span><span class="pl-c1">1.0</span><span class="pl-k">/</span>n)
+replace_value_with_definition(<span class="pl-s"><span class="pl-pds">"</span>weights_H<span class="pl-pds">"</span></span>,<span class="pl-c1">1.0</span><span class="pl-k">/</span>n)</pre></div>
+
+<h2>
+<a id="cross-entropy-objective-vs-epoch-plot" class="anchor" href="#cross-entropy-objective-vs-epoch-plot" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cross-Entropy Objective vs Epoch Plot</h2>
+
+<p>Blue Line is training data curve, green line is testing data curve.(please ignore the title..)</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> IPython.display <span class="pl-k">import</span> Image
+Image(<span class="pl-v">filename</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>objective.png<span class="pl-pds">'</span></span>) </pre></div>
+
+<p><img src="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/dnn_curve.png" alt="curve"></p>
+
+<h2>
+<a id="error-vs-epoch" class="anchor" href="#error-vs-epoch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Error vs Epoch</h2>
+
+<p>Blue Line is training data curve, green line is testing data curve.(please ignore the title..)</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> IPython.display <span class="pl-k">import</span> Image
+Image(<span class="pl-v">filename</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>error.png<span class="pl-pds">'</span></span>) </pre></div>
+
+<p><img src="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/error.png" alt="error"></p>
+
+<h2>
+<a id="test-error-vs-mini-batch-size" class="anchor" href="#test-error-vs-mini-batch-size" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test Error vs Mini Batch Size</h2>
+
+<p>Though size of mini batch doesn't effect the final result too much, the larger mini batch will cause the curve shaking.</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> IPython.display <span class="pl-k">import</span> Image
+Image(<span class="pl-v">filename</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>batchsize.png<span class="pl-pds">'</span></span>) </pre></div>
+
+<p><img src="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/batchsize.png" alt="batchsize"></p>
+
+<h2>
+<a id="test-error-vs-learning-rate" class="anchor" href="#test-error-vs-learning-rate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test Error vs Learning Rate</h2>
+
+<p>Larger learning rate can cause the curve shake, whereas smaller learning rate cause error decrease slow. The following plot shows such property. We then selecte 10e-5 as our learning rate.</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> IPython.display <span class="pl-k">import</span> Image
+Image(<span class="pl-v">filename</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>learningrate.png<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><img src="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/learningrate.png" alt="learningrate"></p>
+
+<h2>
+<a id="test-error-vs-number-of-hidden-nodes" class="anchor" href="#test-error-vs-number-of-hidden-nodes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test Error vs Number of Hidden Nodes</h2>
+
+<p>If number of the hidden nodes is not enough, the complexity of model is limited. The network cannot optimize the objective due to the model complexity limitation. However, too large number of hidden nodes doesn't help to further improve the performance because it is already enough to represent target function. In the following plot, we show that 100 hidden nodes is enough for the task.</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> IPython.display <span class="pl-k">import</span> Image
+Image(<span class="pl-v">filename</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>numberofhidden.png<span class="pl-pds">'</span></span>)</pre></div>
+
+<p><img src="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/numberofhidden.png" alt="numberofhidden"></p>
+
+<h1>
+<a id="data" class="anchor" href="#data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h1>
+
+<p><img src="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork/blob/master/DATA.png" alt="alt tag">
+<a href="https://www.cs.toronto.edu/%7Ekriz/cifar.html">CIFAR Website</a></p>
+
+<h1>
+<a id="update" class="anchor" href="#update" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Update</h1>
+
+<ol>
+<li>Now momentum is fully activated![2016-02-09]</li>
+<li>Visualization for learning curve is added[2016-02-12] </li>
+<li>Experiment functions is built![2016-02-14]</li>
+</ol>
+
+<h1>
+<a id="issue" class="anchor" href="#issue" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Issue</h1>
+
+<ol>
+<li>Haven't implement saving function. So the trained model will lose after finishing the program..</li>
+<li>Doesn't include random dropout mechanism. So you need to trace testing error to control training epoch..</li>
+</ol>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/wuga214/FullyConnectedDeepNeuralNetwork">Fullyconnecteddeepneuralnetwork</a> is maintained by <a href="https://github.com/wuga214">wuga214</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
